@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* global Handlebars, utils, dataSource */ // eslint-disable-line no-unused-vars
 
 {
@@ -62,27 +63,33 @@
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
-
-      console.log('newProduct:', thisProduct);
+      thisProduct.initAccordion();
     }
 
     renderInMenu(){
       const thisProduct = this;
-
-      /* generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
-      // console.log('generatedHTML:', generatedHTML);
-
-      /* create element using utils.createElementFromHTML */
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-      // console.log('thisProduct.element:', thisProduct.element);
-
-      /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
-      // console.log('menuContainer:', menuContainer);
-
-      /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
+    }
+
+    initAccordion(){
+      const thisProduct = this;
+
+      const trigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      console.log('trigger:', trigger);
+
+      trigger.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.element.classList.toggle('active');
+        const allActiveProducts = document.querySelectorAll(select.all.menuProductsActive);
+        for(const activeProduct of allActiveProducts){
+          if (activeProduct != thisProduct.element){
+            activeProduct.classList.remove('active');
+          }
+        }
+      });
     }
   }
 
@@ -104,10 +111,6 @@
     init: function(){
       const thisApp = this;
       console.log('*** App starting ***');
-      // console.log('thisApp:', thisApp);
-      // console.log('classNames:', classNames);
-      // console.log('settings:', settings);
-      // console.log('templates:', templates);
       
       thisApp.initData();
       thisApp.initMenu();

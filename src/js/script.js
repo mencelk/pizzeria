@@ -86,6 +86,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion(){
@@ -125,45 +126,36 @@
 
     processOrder(){
       const thisProduct = this;
-    
-      /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
       const formData = utils.serializeFormToObject(thisProduct.form);
-
-      /* set variable price to equal thisProduct.data.price */
       let price = thisProduct.data.price;
       console.log('formData:', formData);
 
-      /* START LOOP: for each paramId in thisProduct.data.params */
       for(let paramId in thisProduct.data.params){
-        /* save the element in thisProduct.data.params with key paramId as const param */
         const param = thisProduct.data.params[paramId];
-        console.log(formData[paramId]);
-
-        /* START LOOP: for each optionId in param.options */
+        console.log('thisProduct.imageWrapper:', thisProduct.imageWrapper);
         for(let optionId in param.options){
-          /* save the element in param.options with key optionId as const option */
           const option = param.options[optionId];
-          console.log(paramId, optionId, formData[paramId].includes(optionId));
+          // console.log('.' + paramId + '-' + optionId);
           const isOptionSelected = formData[paramId].includes(optionId);
-    
-          /* START IF: if option is selected and option is not default */
+          const allImages = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          console.log('allImages:', allImages);
           if(isOptionSelected && !option.default){
             price += option.price;
-            /* END IF: if option is selected and option is not default */
-          /* START ELSE IF: if option is not selected and option is default */
           } else if(!isOptionSelected && option.default){        
-            /* deduct price of option from price */
             price -= option.price;
           }   
-          /* END ELSE IF: if option is not selected and option is default */
+          // eslint-disable-next-line no-unused-vars
+          for(let image in allImages){
+            if(isOptionSelected){
+              allImages.classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              allImages.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          }
         }
-        /* END LOOP: for each optionId in param.options */
       }
-      /* END LOOP: for each paramId in thisProduct.data.params */
-    
-      /* set the contents of thisProduct.priceElem to be the value of variable price */
+      
       thisProduct.priceElem.innerHTML = price;
-      // console.log('thisProduct.priceElem:', thisProduct.priceElem);
     }
   }
 

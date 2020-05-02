@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable indent */
 /* global Handlebars, utils, dataSource */ // eslint-disable-line no-unused-vars
 

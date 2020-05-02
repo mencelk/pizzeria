@@ -128,28 +128,24 @@
       const thisProduct = this;
       const formData = utils.serializeFormToObject(thisProduct.form);
       let price = thisProduct.data.price;
-      console.log('formData:', formData);
 
       for(let paramId in thisProduct.data.params){
         const param = thisProduct.data.params[paramId];
-        console.log('thisProduct.imageWrapper:', thisProduct.imageWrapper);
         for(let optionId in param.options){
           const option = param.options[optionId];
-          // console.log('.' + paramId + '-' + optionId);
           const isOptionSelected = formData[paramId].includes(optionId);
-          const allImages = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
-          console.log('allImages:', allImages);
+          const images = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+
           if(isOptionSelected && !option.default){
             price += option.price;
           } else if(!isOptionSelected && option.default){        
             price -= option.price;
           }   
-          // eslint-disable-next-line no-unused-vars
-          for(let image in allImages){
+          for(let image in images){
             if(isOptionSelected){
-              allImages.classList.add(classNames.menuProduct.imageVisible);
+              images.classList.add(classNames.menuProduct.imageVisible);
             } else {
-              allImages.classList.remove(classNames.menuProduct.imageVisible);
+              images.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }

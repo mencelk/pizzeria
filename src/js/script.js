@@ -97,6 +97,7 @@
         event.preventDefault();
         thisProduct.element.classList.toggle('active'); 
         const allActiveProducts = document.querySelectorAll(select.all.menuProductsActive);
+
         for(const activeProduct of allActiveProducts){
           if (activeProduct !== thisProduct.element){
             activeProduct.classList.remove('active');
@@ -132,9 +133,16 @@
 
       for(let paramId in thisProduct.data.params){
         const param = thisProduct.data.params[paramId];
+
         for(let optionId in param.options){
           const option = param.options[optionId];
-          const isOptionSelected = formData[paramId].includes(optionId);
+          let isOptionSelected;
+
+          if(formData[paramId]){
+            isOptionSelected = formData[paramId].includes(optionId);
+          } else {
+            true;
+          }
           const images = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
 
           if(isOptionSelected && !option.default){
@@ -142,6 +150,7 @@
           } else if(!isOptionSelected && option.default){        
             price -= option.price;
           }   
+
           for(let image in images){
             if(isOptionSelected){
               images.classList.add(classNames.menuProduct.imageVisible);
@@ -149,6 +158,7 @@
               images.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
+
         }
       }
       

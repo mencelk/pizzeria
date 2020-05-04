@@ -90,7 +90,6 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
-      // console.log('thisProduct.amountWidgetElem:', thisProduct.amountWidgetElem);
     }
 
     initAccordion(){
@@ -164,7 +163,8 @@
 
         }
       }
-      
+
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price;
     }
 
@@ -172,6 +172,11 @@
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+
+      thisProduct.amountWidgetElem.addEventListener('updated', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
     }
   }
 
@@ -181,9 +186,7 @@
 
       thisWidget.getElements(element);
       thisWidget.setValue(thisWidget.input.value);
-
-      console.log('AmountWidget:', thisWidget);
-      console.log('constructor arguments:', element);
+      thisWidget.initActions();
     }
 
     getElements(element){
@@ -197,18 +200,39 @@
 
     setValue(value){
       const thisWidget = this;
-      console.log('thisWidget:', thisWidget);
 
       const newValue = parseInt(value);
 
       /* TODO: Add validation */
 
       thisWidget.value = newValue;
+      this.announce();
       thisWidget.input.value = thisWidget.value;
     }
 
     initActions(){
-      
+      const thisWidget = this;
+
+      thisWidget.input.addEventListener('change', function(){
+        thisWidget.setValue(thisWidget.input.value);
+      });
+
+      thisWidget.linkIncrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+      });
+
+      thisWidget.linkDecrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+    }
+
+    announce(){
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
     }
   }
 

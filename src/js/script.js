@@ -184,8 +184,10 @@
     constructor(element){
       const thisWidget = this;
 
+      thisWidget.value = settings.amountWidget.defaultValue;
+
       thisWidget.getElements(element);
-      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.setValue(thisWidget.value);
       thisWidget.initActions();
     }
 
@@ -200,13 +202,15 @@
 
     setValue(value){
       const thisWidget = this;
-
       const newValue = parseInt(value);
+      const minValue = settings.amountWidget.defaultMin;
+      const maxValue = settings.amountWidget.defaultMax;
 
-      /* TODO: Add validation */
+      if(thisWidget.input.value <= maxValue && thisWidget.input.value >= minValue && value <= maxValue && value >= minValue){
+        thisWidget.value = newValue;
+        thisWidget.announce();
+      }
 
-      thisWidget.value = newValue;
-      this.announce();
       thisWidget.input.value = thisWidget.value;
     }
 

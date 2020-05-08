@@ -170,13 +170,8 @@
 
         for(let optionId in param.options){
           const option = param.options[optionId];
-          let isOptionSelected;
 
-          if(formData[paramId]){
-            isOptionSelected = formData[paramId].includes(optionId);
-          } else {
-            true;
-          }
+          const isOptionSelected = formData[paramId] && formData[paramId].includes(optionId);
           const images = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
 
           if(isOptionSelected && !option.default){

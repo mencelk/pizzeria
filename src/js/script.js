@@ -295,9 +295,6 @@
 
       thisCart.getElements(element);
       thisCart.initActions();
-
-
-      console.log('new Cart', thisCart);
     }
 
     getElements(element){
@@ -306,7 +303,7 @@
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
-      thisCart.dom.productList = {};
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
 
     initActions(){
@@ -321,12 +318,9 @@
     add(menuProduct){
       const thisCart = this;
       
-      console.log('adding product', menuProduct);
-
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      thisCart.dom.productList = document.querySelector(select.cart.form);
-      thisCart.dom.productList.insertAdjacentHTML('beforeend', generatedDOM.innerHTML);
+      thisCart.dom.productList.appendChild(generatedDOM);
     }
   }
 

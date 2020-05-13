@@ -232,9 +232,8 @@
       const thisWidget = this;
 
       thisWidget.value = settings.amountWidget.defaultValue;
-
       thisWidget.getElements(element);
-      thisWidget.setValue(thisWidget.value);
+      thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
     }
 
@@ -354,7 +353,7 @@
       const thisCartProduct = this;
 
       thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget);
-
+      
       thisCartProduct.dom.amountWidget.addEventListener('updated', function(event){
         event.preventDefault();
         thisCartProduct.amount = thisCartProduct.amountWidget.value;

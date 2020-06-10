@@ -1,6 +1,6 @@
 import {Product} from './components/Product.js';
 import {Cart} from './components/Cart.js';
-import {select, settings} from './settings.js';
+import {select, settings, classNames} from './settings.js';
 
 const app = {
   initMenu: function(){
@@ -39,9 +39,42 @@ const app = {
     });
   },
 
+  initPages: function(){
+    const thisApp = this;
+
+    thisApp.pages = Array.from(document.querySelector(select.containerOf.pages).children);
+    thisApp.navLinks = Array.from(document.querySelectorAll(select.nav.links));
+
+    thisApp.activatePage(thisApp.pages[0].id);
+
+    for(let link of thisApp.navLinks){
+      link.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        const href = clickedElement.getAttribute('href');
+        const id = href.replace('#', '');
+
+        thisApp.activatePage(id);
+      });
+    }
+  },
+
+  activatePage: function(pageId){
+    const thisApp = this;
+
+    for(let link of thisApp.navLinks){
+      link.classList.toggle(classNames.nav.active, link.getAttribute('href') == '#' + pageId);
+    }
+    for(let page of thisApp.pages){
+      page.classList.toggle(classNames.pages.active, page.getAttribute('id') == pageId);
+    }
+  },
+
   init: function(){
     const thisApp = this;
     
+    thisApp.initPages();
     thisApp.initData();
     thisApp.initCart();
   },
